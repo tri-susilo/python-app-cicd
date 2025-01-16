@@ -55,11 +55,6 @@ pipeline {
                 sh 'sleep 60'
                 sh './jenkins/kill.sh'
             }
-            post {
-                success {
-                    archiveArtifacts 'dist/add2vals'
-                }
-            }
         }
     }
 }
