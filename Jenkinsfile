@@ -34,7 +34,7 @@ pipeline {
             }
             steps {
                 echo 'Starting the deployment stage...'
-                sh  'pip install --no-cache-dir pyinstaller'
+               // sh  'pip install --no-cache-dir pyinstaller'
                 sh 'pyinstaller --onefile sources/add2vals.py'
         	    }
             post {
