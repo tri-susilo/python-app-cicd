@@ -26,20 +26,24 @@ pipeline {
                 }
             }
         }
-        stage('Deliver') {
+        stage('Deploy') {
             agent {
                 docker {
                     image 'cdrx/pyinstaller-linux:python2'
                 }
             }
             steps {
+                echo 'Starting the deployment stage...'
+                sh 'whoami'               // Check user in the container
+                sh 'ls -al sources/'      // List files in the sources directory
                 sh 'pyinstaller --onefile sources/add2vals.py'
-            }
+        	    }
             post {
                 success {
                     archiveArtifacts 'dist/add2vals'
                 }
             }
         }
+
     }
 }
