@@ -51,8 +51,11 @@ pipeline {
                 }
             }
             steps {
+                echo 'Starting PyInstaller step...'
                 sh 'pyinstaller --onefile sources/add2vals.py'
+                echo 'PyInstaller step completed.'
                 sh 'sleep 60'
+                echo 'Running kill.sh script...'
                 sh './jenkins/kill.sh'
             }
         }
