@@ -26,23 +26,43 @@ pipeline {
                 }
             }
         }
+
+        stage('Manual Approval') {
+            steps {
+                script {
+                    def userInput = input(
+                        message: 'Lanjutkan ke tahap Deploy?',
+                        parameters: [choice(choices: ['Yes'], description: 'Choose an option', name: 'CONTINUE')]
+                    )
+                    if (userInput == 'Yes') {
+                        echo 'Continuing with deployment...'
+                    } else {
+                        echo 'Deployment aborted.'
+                        sh './jenkins/kill.sh'
+                    }
+                }
+            }
+        }
+
         stage('Deploy') {
             agent {
                 docker {
-                    image 'python:2.7-slim'
+                    image 'cdrx/pyinstaller-linux:python3'
                 }
             }
             steps {
-                echo 'Starting the deployment stage...'
-               // sh  'pip install --no-cache-dir pyinstaller'
+                echo 'Starting PyInstaller step...'
                 sh 'pyinstaller --onefile sources/add2vals.py'
-        	    }
+                echo 'PyInstaller step completed.'
+                sh 'sleep 60'
+                echo 'Running kill.sh script...'
+                sh './jenkins/kill.sh'
+            }
             post {
                 success {
                     archiveArtifacts 'dist/add2vals'
                 }
             }
         }
-
     }
 }
