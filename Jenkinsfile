@@ -58,6 +58,11 @@ pipeline {
                 echo 'Running kill.sh script...'
                 sh './jenkins/kill.sh'
             }
+            post {
+                success {
+                    archiveArtifacts 'dist/add2vals'
+                }
+            }
         }
     }
 }
