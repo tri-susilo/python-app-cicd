@@ -29,13 +29,14 @@ pipeline {
         stage('Deploy') {
             agent {
                 docker {
-                    image 'cdrx/pyinstaller-linux:python2'
+                    image 'python:2.7-slim'
                 }
             }
             steps {
                 echo 'Starting the deployment stage...'
                 sh 'whoami'               // Check user in the container
                 sh 'ls -al sources/'      // List files in the sources directory
+                sh  'install --no-cache-dir pyinstaller'
                 sh 'pyinstaller --onefile sources/add2vals.py'
         	    }
             post {
