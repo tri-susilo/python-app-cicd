@@ -34,8 +34,6 @@ pipeline {
             }
             steps {
                 echo 'Starting the deployment stage...'
-                sh 'whoami'               // Check user in the container
-                sh 'ls -al sources/'      // List files in the sources directory
                 sh  'install --no-cache-dir pyinstaller'
                 sh 'pyinstaller --onefile sources/add2vals.py'
         	    }
