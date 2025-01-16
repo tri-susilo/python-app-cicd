@@ -43,7 +43,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Deploy') {
             agent {
                 docker {
@@ -52,15 +52,13 @@ pipeline {
             }
             steps {
                 sh 'pyinstaller --onefile sources/add2vals.py'
+                sh 'sleep 60'
+                sh './jenkins/kill.sh'
             }
             post {
                 success {
                     archiveArtifacts 'dist/add2vals'
                 }
-            }
-            steps {
-                sh 'sleep 60'
-                sh './jenkins/kill.sh'
             }
         }
     }
