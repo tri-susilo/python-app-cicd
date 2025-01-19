@@ -43,26 +43,42 @@ pipeline {
                 }
             }
         }
-
         stage('Deploy') {
+
             agent {
+
                 docker {
-                    image 'cdrx/pyinstaller-linux:python3'
+
+                    image 'python:3.9'
+
+                    args '-u root'
+
                 }
+
             }
+
             steps {
-                echo 'Starting PyInstaller step...'
+
+                sh 'pip install pyinstaller'
+
                 sh 'pyinstaller --onefile sources/add2vals.py'
-                echo 'PyInstaller step completed.'
-                sh 'sleep 60'
-                echo 'Running kill.sh script...'
-                sh './jenkins/kill.sh'
+
+                sleep time: 1, unit: 'MINUTES'
+
+                echo 'Pipeline has finished successfully.'
+
             }
+
             post {
+
                 success {
+
                     archiveArtifacts 'dist/add2vals'
+
                 }
+
             }
+
         }
     }
 }
